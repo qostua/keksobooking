@@ -1,9 +1,6 @@
 const getRandomIntFromRange = function (firstNum, secondNum) {
-  let min = (firstNum < secondNum) ? firstNum : secondNum;
-  let max = (firstNum < secondNum) ? secondNum : firstNum;
-
-  min = Math.ceil(min);
-  max = Math.floor(max);
+  const min = Math.ceil(Math.min(Math.abs(firstNum), Math.abs(secondNum)));
+  const max = Math.floor(Math.max(Math.abs(firstNum), Math.abs(secondNum)));
 
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
@@ -11,9 +8,10 @@ const getRandomIntFromRange = function (firstNum, secondNum) {
 getRandomIntFromRange(3.9, 1);
 
 const getRandomFloorFromRange = function (firstNum, secondNum, numberSimbolsAfterComma) {
-  const powerTen = 10 ** numberSimbolsAfterComma;
-
-  return getRandomIntFromRange(firstNum * powerTen, secondNum * powerTen) / powerTen;
+  const min = Math.min(Math.abs(firstNum), Math.abs(secondNum));
+  const max = Math.max(Math.abs(firstNum), Math.abs(secondNum));
+  const result = Math.random() * (max - min) + min;
+  return result.toFixed(numberSimbolsAfterComma);
 };
 
 getRandomFloorFromRange(1, 2, 10);
