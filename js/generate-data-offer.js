@@ -77,4 +77,4 @@ function generateDataAnnouncements(num) {
   return new Array(num).fill(null).map((item, index) => createAnnouncement(index + 1));
 }
 
-export {generateDataAnnouncements};
+export {generateDataAnnouncements, ANNOUNCEMENT_TYPES};

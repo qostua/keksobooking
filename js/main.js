@@ -1,3 +1,2 @@
-import {generateDataAnnouncements} from './generate-data-offer.js';
-
-generateDataAnnouncements(10);
+import './generate-card.js';
+import './form.js';
