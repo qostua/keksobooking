@@ -1,26 +1,19 @@
-import {offers} from './generate-card.js';
+const StartCoordinate = {
+  LAT: 35.67598,
+  LNG: 139.75245,
+};
+const MAP_START_ZOOM_SETTING = 15;
+const MAP_MAX_ZOOM_SETTING = 19;
 
-const map = L.map('map-canvas')
-  .on('load', () => {
-    console.log('load');
-  })
-  .setView({
-    lat: 35.652832,
-    lng: 139.839478,
-  }, 10);
+const MAP_TILE_LAYER_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+const MAP_TILE_LAYER_COPYRIGHT = '&copy;<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-}).addTo(map);
-document.querySelector('.leaflet-control-attribution').style.fontSize = '5px';
-
-const mainPinIcon = L.icon({
+const mainPinIconOptions = {
   iconUrl: '../img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
-});
-const pinIcon = L.icon({
+};
+const pinIconOptions = {
   iconUrl: '../img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
