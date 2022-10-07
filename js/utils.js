@@ -11,6 +11,27 @@ const getNoun = (number, oneNounValue, twoNounsValue, fiveNounsValue) => {
     return twoNounsValue;
   }
   return fiveNounsValue;
-}
+};
 
-export {getRandomPositiveInteger, getRandomPositiveFloat, getNoun};
+const showAlert = (idTemplate = 'error') => {
+  const alertTemplate = document.querySelector(`#${idTemplate}`).content.firstElementChild;
+  const alert = alertTemplate.cloneNode(true);
+
+  document.querySelector('body').append(alert);
+
+  const handleKeypress = (evt) => {
+    if (evt.key === 'Escape') {
+      alert.remove();
+      document.removeEventListener('keydown', handleKeypress);
+    }
+  };
+
+  document.addEventListener('keydown', handleKeypress);
+
+  document.addEventListener('click', () => {
+    alert.remove();
+    document.removeEventListener('keydown', handleKeypress);
+  }, { once: true });
+};
+
+export {getNoun, showAlert};
