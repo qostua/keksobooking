@@ -1,11 +1,14 @@
-const MIN_AD_TITELE_LENGTH = 30;
-const MAX_AD_TITELE_LENGTH = 30;
-const MIN_PRICE_FOR_AD_TYPE = {
-  'bungalow': 0,
-  'flat': 1000,
-  'hotel': 3000,
-  'house': 5000,
-  'palace': 10000,
+import {showAlert} from './utils.js';
+import {sendData} from './api.js';
+import {setStartMapPosition, setStartMainMarkerPosition} from './map.js';
+import {CustomValidation, resetValidityInput, checkInput} from './validation.js';
+
+const minPriceToOfferType = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
 };
 const capacityValuesToRoomNumber = {
   '1': ['1'],
@@ -22,148 +25,177 @@ const roomNumberValuesToCapacity = {
 
 const adForm = document.querySelector('.ad-form');
 const mapForm = document.querySelector('.map__filters');
-
-//активация и дизактивация формы
-function disableAdForm() {
-  adForm.classList.add('ad-form--disabled');
-
-  for (const fieldset of adForm.querySelectorAll('fieldset')) {
-    fieldset.disabled = true;
-  }
-}
-function disableMapForm() {
-  mapForm.classList.add('map__filters--disabled');
-
-  for (const select of mapForm.querySelectorAll('select')) {
-    select.disabled = true;
-  }
-  for (const fieldset of mapForm.querySelectorAll('fieldset')) {
-    fieldset.disabled = true;
-  }
-}
-function disableForm() {
-  disableAdForm();
-  disableMapForm();
-}
-
-function activeDiabledElements(parent) {
-  for (const disabledElement of parent.querySelectorAll('*[disabled]')) {
-    disabledElement.disabled = false;
-  }
-}
-function activateForm() {
-  activeDiabledElements(adForm);
-  adForm.classList.remove('ad-form--disabled');
-
-  activeDiabledElements(mapForm);
-  mapForm.classList.remove('map__filters--disabled');
-}
-
-//проверка валидности
 const adTitleInput = adForm.querySelector('#title');
-adTitleInput.addEventListener('invalid', () => {
-  const valueLength = adTitleInput.value.length;
-
-  if (adTitleInput.validity.tooShort) {
-    adTitleInput.setCustomValidity(`Еще ${MIN_AD_TITELE_LENGTH - valueLength} симв.`);
-  } else if (adTitleInput.validity.tooLong) {
-    adTitleInput.setCustomValidity(`Удалите лишние ${valueLength - MAX_AD_TITELE_LENGTH} симв.`);
-  } else if (adTitleInput.validity.valueMissing) {
-    adTitleInput.setCustomValidity('Это обязательное поле');
-  } else {
-    adTitleInput.setCustomValidity('');
-  }
-});
-adTitleInput.addEventListener('input', () => {
-  adTitleInput.reportValidity();
-});
-
+const adAddressInput = adForm.querySelector('#address');
 const adPriceInput = adForm.querySelector('#price');
-adPriceInput.addEventListener('invalid', () => {
-  const minPrice = adPriceInput.min;
-  const maxPrice = adPriceInput.max;
-
-  if (adPriceInput.validity.rangeUnderflow) {
-    adPriceInput.setCustomValidity(`Цена должна быть не меньше ${minPrice} руб.`);
-  } else if (adPriceInput.validity.rangeOverflow) {
-    adPriceInput.setCustomValidity(`Цена должна быть не больше ${maxPrice} руб.`);
-  } else if (adPriceInput.validity.valueMissing) {
-    adPriceInput.setCustomValidity('Это обязательное поле');
-  } else {
-    adPriceInput.setCustomValidity('');
-  }
-
-});
-adPriceInput.addEventListener('input', () => {
-  adPriceInput.reportValidity();
-});
-
+const adTypeSelect = adForm.querySelector('#type');
 const adTimeinInput = adForm.querySelector('#timein');
 const adTimeoutInput = adForm.querySelector('#timeout');
+const adRoomNumberSelect = adForm.querySelector('#room_number');
+const adCapacitySelect = adForm.querySelector('#capacity');
+const submitAdForm = adForm.querySelector('.ad-form__submit');
+const resetBtnAdForm = adForm.querySelector('.ad-form__reset');
+
+const resetForm = () => {
+  adForm.reset();
+  mapForm.reset();
+
+  const fields = adForm.querySelectorAll('input, select, textarea');
+
+  fields.forEach((field) => {
+    if (field.CustomValidation) {
+      resetValidityInput(field);
+    }
+    resetValidityInput(field);
+  });
+
+  setStartMapPosition();
+  setStartMainMarkerPosition();
+};
+
+//check validity
+const titleValidityChecks = [
+  {
+    getInvalidityMessage(input) {
+      if (input.validity.valueMissing) {
+        return 'Это обязательное поле';
+      }
+      return '';
+    },
+  },
+  {
+    getInvalidityMessage(input) {
+      if (input.validity.tooShort) {
+        return `Ещё ${input.minLength - input.value.length} симв.`;
+      }
+      return '';
+    },
+  },
+  {
+    getInvalidityMessage(input) {
+      if (input.validity.tooLong) {
+        return `Уберите ${input.value.length - input.maxLength} симв.`;
+      }
+      return '';
+    },
+  },
+];
+const priceValidityChecks = [
+  {
+    getInvalidityMessage(input) {
+      if (input.validity.rangeUnderflow) {
+        return `Не меньше ${input.min} руб.`;
+      }
+      return '';
+    },
+  },
+  {
+    getInvalidityMessage(input) {
+      if (input.validity.rangeOverflow) {
+        return `Не больше ${input.max} руб.`;
+      }
+      return '';
+    },
+  },
+  {
+    getInvalidityMessage(input) {
+      if (input.validity.valueMissing) {
+        return 'Это обязательное поле';
+      }
+      return '';
+    },
+  },
+  {
+    getInvalidityMessage(input) {
+      if (input.validity.badInput) {
+        return 'Введите числовое значение';
+      }
+      return '';
+    },
+  },
+];
+const roomNumberValidityChecks = [
+  {
+    getInvalidityMessage() {
+      const roomNumber = adRoomNumberSelect.value;
+      const capacity = adCapacitySelect.value;
+
+      const validity = roomNumberValuesToCapacity[capacity].includes(roomNumber);
+
+      if (!validity) {
+        return (roomNumber === '100') ? 'Такое количество комнат не подходит для гостей' : `Для такого количества комнат доступно следующее количество гостей: ${capacityValuesToRoomNumber[roomNumber].join (', ')}`;
+      }
+      return '';
+    },
+  },
+];
+
+adTitleInput.CustomValidation = new CustomValidation(titleValidityChecks);
+adPriceInput.CustomValidation = new CustomValidation(priceValidityChecks);
+adCapacitySelect.CustomValidation = new CustomValidation(roomNumberValidityChecks);
+
+adForm.addEventListener('input', (evt) => {
+  if (evt.target.CustomValidation) {
+    checkInput(evt.target);
+  }
+});
+
+const setAddressValue = (value) => {
+  adAddressInput.value = value;
+};
+
+adRoomNumberSelect.addEventListener('change', () => {
+  checkInput(adCapacitySelect);
+});
+adCapacitySelect.addEventListener('change', () => {
+  checkInput(adCapacitySelect);
+});
+
+const setMinPriceInput = (type) => {
+  const minPrice = minPriceToOfferType[type];
+  if (Number.isFinite(minPrice)) {
+    adPriceInput.min = minPrice;
+    adPriceInput.placeholder = minPrice;
+  }
+};
+adTypeSelect.addEventListener('change', () => {
+  setMinPriceInput(adTypeSelect.value);
+  if (adPriceInput.value !== '') {
+    checkInput(adPriceInput);
+  }
+});
+
 adTimeinInput.addEventListener('change', () => {
   adTimeoutInput.value = adTimeinInput.value;
 });
 adTimeoutInput.addEventListener('change', () => {
   adTimeinInput.value = adTimeoutInput.value;
 });
-function customVslidityForTime() {
-  if (adTimeoutInput.value !== adTimeinInput.value) {
-    adTimeoutInput.setCustomValidity('Время заезда и выезда должно совпадать');
-  } else {
-    adTimeoutInput.setCustomValidity('');
-  }
 
-  adTimeoutInput.reportValidity();
-}
+submitAdForm.addEventListener('click', () => {
+  const fields = adForm.querySelectorAll('input, select, textarea');
 
-const adTypeSelect = adForm.querySelector('#type');
-function setMinPriceInput(type) {
-  adPriceInput.min = MIN_PRICE_FOR_AD_TYPE[type];
-}
-adTypeSelect.addEventListener('change', () => {
-  setMinPriceInput(adTypeSelect.value);
-  if (adPriceInput.value !== '') {
-    adPriceInput.reportValidity();
-  }
+  fields.forEach((field) => {
+    if (field.CustomValidation) {
+      checkInput(field);
+    }
+  });
+});
+resetBtnAdForm.addEventListener('click', (evt) => {
+  evt.preventDefault();
+
+  resetForm();
 });
 
-const adRoomNumberSelect = adForm.querySelector('#room_number');
-const adCapacitySelect = adForm.querySelector('#capacity');
-function customValidityForRoomNumber() {
-  const roomNumber = adRoomNumberSelect.value;
-  const capacity = adCapacitySelect.value;
+const setAdFormSubmit = (onSucsess) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    sendData(
+      () => onSucsess(),
+      () => showAlert('error'),
+      new FormData(evt.target),
+    );
+  });
+};
 
-  const validity = ROOM_NUMBER_VALUES_FOR_CAPACITY[capacity].includes(roomNumber);
-  if (!validity) {
-    const customValidityMessage = (roomNumber === '100') ? 'Такое количество комнат не подходит для гостей' : `Для такого количества комнат доступно следующее количество гостей: ${CAPACITY_VALUES_FOR_ROOM_NUMBER[roomNumber].join (', ')}`;
-
-    adCapacitySelect.setCustomValidity(customValidityMessage);
-  } else {
-    adCapacitySelect.setCustomValidity('');
-  }
-  adCapacitySelect.reportValidity();
-}
-
-adRoomNumberSelect.addEventListener('change', () => {
-  customValidityForRoomNumber();
-});
-adCapacitySelect.addEventListener('change', () => {
-  customValidityForRoomNumber();
-});
-
-const adImagesInput = adForm.querySelector('#images');
-adImagesInput.addEventListener('invalid', () => {
-  if (adImagesInput.validity.valueMissing) {
-    adImagesInput.setCustomValidity('Выберете одну или несколько фотографий вашего жилья');
-  } else {
-    adImagesInput.setCustomValidity('');
-  }
-});
-
-const adFormSubmit = adForm.querySelector('.ad-form__submit');
-adFormSubmit.addEventListener('click', () => {
-  customValidityForRoomNumber();
-  customVslidityForTime();
-});
-
-export {disableForm, activateForm};
+export {resetForm, setAdFormSubmit, setAddressValue};
