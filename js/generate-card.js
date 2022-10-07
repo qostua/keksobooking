@@ -1,7 +1,13 @@
 import {generateDataAnnouncements, ANNOUNCEMENT_TYPES} from './generate-data-offer.js';
 import {getNoun} from './utils.js';
 
-const dataOffers = generateDataAnnouncements(10);
+const offerTypes = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+  hotel: 'Гостиница',
+};
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
