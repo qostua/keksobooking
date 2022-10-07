@@ -1011,6 +1011,65 @@ fieldset {
   opacity: 0.6;
 }
 
+.error-server {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  background-color: #ff5635;
+}
+
+.error-server__message {
+  padding: 10px;
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 700;
+  overflow: hidden;
+}
+
+.error-server__button {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+
+  position: absolute;
+  right: 20px;
+  top: 45%;
+}
+.error-server__button::after, .error-server__button::before {
+  position: absolute;
+  content: "";
+  width: 15px;
+  height: 3px;
+  background-color: #353535;
+}
+.error-server__button::after {
+  transform: rotate(-45deg);
+}
+.error-server__button::before {
+  transform: rotate(45deg);
+}
+
+.error-server__button:hover,
+.error-server__button:focus {
+  opacity: 0.6;
+}
+
+.error-server__button:focus {
+  outline: none;
+}
+
+.error-server__button:active {
+  outline: none;
+  opacity: 0.4;
+}
+
 .visually-hidden {
   position: absolute;
 

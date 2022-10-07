@@ -231,7 +231,21 @@
   </div>
 </template>
 
-<script src="./leaflet/leaflet.js" type=""></script>
+<!-- Сообщение об ошибке получения данных -->
+<template id="error-server">
+  <div class="error-server">
+    <p class="error-server__message">Не удалось получить данные с сервера. Проверьте подключение и перезагрузите страницу.</p>
+    <button type="button" class="error-server__button" tabindex="1"><span class="visually-hidden">Закрыть</span></button>
+  </div>
+</template>
+
+<script async type="module">
+  import {disableForm} from './js/activation-page.js';
+
+  disableForm();
+</script>
+<script src="./leaflet/leaflet.js"></script>
+<link rel="stylesheet" href="./leaflet/leaflet.css">
 <script src="./js/main.js" type="module"></script>
 </body>
 </html>
