@@ -71,7 +71,7 @@ const setMainMarkerMove = (cb) => {
   });
 };
 
-const offerMarkers = L.layerGroup().addTo(map);
+const offerMarkers = L.layerGroup();
 
 const createMarker = (card) => {
   const lat = card.dataLat;
