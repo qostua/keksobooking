@@ -7,13 +7,13 @@ const MIN_PRICE_FOR_AD_TYPE = {
   'house': 5000,
   'palace': 10000,
 };
-const CAPACITY_VALUES_FOR_ROOM_NUMBER = {
+const capacityValuesToRoomNumber = {
   '1': ['1'],
   '2': ['1', '2'],
   '3': ['1', '2', '3'],
   '100': ['0'],
 };
-const ROOM_NUMBER_VALUES_FOR_CAPACITY = {
+const roomNumberValuesToCapacity = {
   '0': ['100'],
   '1': ['1', '2', '3'],
   '2': ['2', '3'],
