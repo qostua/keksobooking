@@ -91,9 +91,6 @@ const createMarker = (card) => {
     .addTo(offerMarkers)
     .bindPopup(
       card,
-      {
-        keepInView: true,
-      },
     );
 };
 
