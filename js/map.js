@@ -45,35 +45,42 @@ const pinIcon = L.icon(pinIconOptions);
 
 const mainMarker = L.marker(
   {
-    lat: 35.652832,
-    lng: 139.839478,
+    lat: StartCoordinate.LAT,
+    lng: StartCoordinate.LNG,
   },
   {
     draggable: true,
     icon: mainPinIcon,
+    zIndexOffset: 999999,
   },
 );
-
+const setStartMainMarkerPosition = () => {
+  mainMarker.setLatLng({
+    lat: StartCoordinate.LAT,
+    lng: StartCoordinate.LNG,
+  });
+};
 mainMarker.addTo(map);
 
-const addressInput = document.querySelector('#address');
-
-mainMarker.on('move', () => {
-  addressInput.value = Object.values(mainMarker._latlng)
-    .map((item) => item.toFixed(5))
-    .join(', ');
-});
+const setMainMarkerMove = (cb) => {
+  mainMarker.on('move', () => {
+    const coordinates = Object.values(mainMarker.getLatLng())
+      .map((item) => item.toFixed(5))
+      .join(', ');
+    cb(coordinates);
+  });
+};
 
 const offerMarkers = L.layerGroup().addTo(map);
 
-function createMarker(card) {
+const createMarker = (card) => {
   const lat = card.dataLat;
   const lng = card.dataLng;
 
   const marker = L.marker(
     {
-      lat: lat,
-      lng: lng,
+      lat,
+      lng,
     },
     {
       icon: pinIcon,
@@ -88,10 +95,13 @@ function createMarker(card) {
         keepInView: true,
       },
     );
-}
+};
 
-offers.forEach((card) => {
-  createMarker(card);
-});
+const createOffersList = (offers) => {
+  offers.forEach((card) => {
+    createMarker(card);
+  });
+};
+offerMarkers.addTo(map);
 
 export {getMap, createOffersList, setMainMarkerMove, setStartMapPosition, setStartMainMarkerPosition};
