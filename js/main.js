@@ -5,7 +5,16 @@ import {createOffersList, getMap, setMainMarkerMove} from './map.js';
 import {generateOffersList} from './generate-card.js';
 import {showAlert} from './utils.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  disableForm();
-  activateForm();
+getMap(() => {
+  activateAdForm();
+  getData((offers) => {
+    createOffersList(generateOffersList(offers));
+    activateMapForm();
+  });
+  setMainMarkerMove(setAddressValue);
+});
+
+setAdFormSubmit(() => {
+  resetForm();
+  showAlert('success');
 });
