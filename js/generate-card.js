@@ -1,4 +1,3 @@
-import {generateDataAnnouncements, ANNOUNCEMENT_TYPES} from './generate-data-offer.js';
 import {getNoun} from './utils.js';
 
 const offerTypes = {
