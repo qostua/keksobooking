@@ -17,7 +17,31 @@ const pinIconOptions = {
   iconUrl: '../img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
-});
+};
+
+const map = L.map('map-canvas');
+
+const setStartMapPosition = () => {
+  map.setView({
+    lat: StartCoordinate.LAT,
+    lng: StartCoordinate.LNG,
+  }, MAP_START_ZOOM_SETTING);
+};
+
+L.tileLayer(MAP_TILE_LAYER_URL, {
+  maxZoom: MAP_MAX_ZOOM_SETTING,
+  attribution: MAP_TILE_LAYER_COPYRIGHT,
+}).addTo(map);
+
+const getMap = (onSucsess) => {
+  map.on('load', () => {
+    onSucsess();
+  });
+  setStartMapPosition();
+};
+
+const mainPinIcon = L.icon(mainPinIconOptions);
+const pinIcon = L.icon(pinIconOptions);
 
 const mainMarker = L.marker(
   {
@@ -70,3 +94,4 @@ offers.forEach((card) => {
   createMarker(card);
 });
 
+export {getMap, createOffersList, setMainMarkerMove, setStartMapPosition, setStartMainMarkerPosition};
