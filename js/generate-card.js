@@ -84,9 +84,6 @@ const generateOfferPopup = (data) => {
   return offerPopup;
 };
 
-  cardPopup.querySelector('.popup__avatar').src = data.author.avatar;
-  return cardPopup;
-}
-const offers = dataOffers.map((item) => generateOffer(item));
+const generateOffersList = (dataOffers) => dataOffers.map((item) => generateOfferPopup(item));
 
-export {offers};
+export {generateOffersList};
