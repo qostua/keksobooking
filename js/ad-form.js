@@ -2,6 +2,7 @@ import {showAlert} from './utils.js';
 import {sendData} from './api.js';
 import {setStartMapPosition, setStartMainMarkerPosition} from './map.js';
 import {CustomValidation, resetValidityInput, checkInput} from './validation.js';
+import {resetMapForm} from './map-form.js';
 
 const minPriceToOfferType = {
   bungalow: 0,
@@ -23,8 +24,10 @@ const roomNumberValuesToCapacity = {
   '3': ['3'],
 };
 
+const DEFAULT_AVATAR_URL = 'img/muffin-grey.svg';
+
 const adForm = document.querySelector('.ad-form');
-const mapForm = document.querySelector('.map__filters');
+const avatarPreview = adForm.querySelector('.ad-form-header__preview img');
 const adTitleInput = adForm.querySelector('#title');
 const adAddressInput = adForm.querySelector('#address');
 const adPriceInput = adForm.querySelector('#price');
@@ -33,12 +36,23 @@ const adTimeinInput = adForm.querySelector('#timein');
 const adTimeoutInput = adForm.querySelector('#timeout');
 const adRoomNumberSelect = adForm.querySelector('#room_number');
 const adCapacitySelect = adForm.querySelector('#capacity');
+const adPhotoContainer = adForm.querySelector('.ad-form__photo-container');
 const submitAdForm = adForm.querySelector('.ad-form__submit');
 const resetBtnAdForm = adForm.querySelector('.ad-form__reset');
 
+const removePreviewPhoto = () => {
+  const adPhotos = adPhotoContainer.querySelectorAll('.ad-form__photo');
+
+  for (let index = adPhotos.length - 1; index >= 0; index--) {
+    adPhotos[index].remove();
+  }
+};
 const resetForm = () => {
   adForm.reset();
-  mapForm.reset();
+  removePreviewPhoto();
+  avatarPreview.src = DEFAULT_AVATAR_URL;
+
+  resetMapForm();
 
   const fields = adForm.querySelectorAll('input, select, textarea');
 
@@ -198,4 +212,9 @@ const setAdFormSubmit = (onSucsess) => {
   });
 };
 
-export {resetForm, setAdFormSubmit, setAddressValue};
+export {
+  resetForm,
+  setAdFormSubmit,
+  setAddressValue,
+  removePreviewPhoto
+};
