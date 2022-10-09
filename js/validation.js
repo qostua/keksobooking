@@ -46,5 +46,8 @@ const checkInput = (input) => {
   input.reportValidity();
 };
 
-
-export {CustomValidation, resetValidityInput, checkInput};
+export {
+  CustomValidation,
+  resetValidityInput,
+  checkInput
+};
