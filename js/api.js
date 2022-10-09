@@ -1,4 +1,6 @@
-import {showAlert} from './utils.js';
+import {
+  showAlert
+} from './utils.js';
 
 const Url = {
   DATA: 'https://23.javascript.pages.academy/keksobooking/data',
@@ -14,8 +16,8 @@ const getData = (onSucces) => {
         showAlert('error-server');
       }
     })
-    .then((offers) => {
-      onSucces(offers);
+    .then((data) => {
+      onSucces(data);
     })
     .catch(() => {
       showAlert('error-server');
@@ -42,4 +44,7 @@ const sendData = (onSucces, onFail, body) => {
     });
 };
 
-export {getData, sendData};
+export {
+  getData,
+  sendData
+};
