@@ -71,11 +71,11 @@ const setMainMarkerMove = (cb) => {
   });
 };
 
-const offerMarkers = L.layerGroup();
+const popupMarkers = L.layerGroup();
 
-const createMarker = (card) => {
-  const lat = card.dataLat;
-  const lng = card.dataLng;
+const createMarker = (popup) => {
+  const lat = popup.dataLat;
+  const lng = popup.dataLng;
 
   const marker = L.marker(
     {
@@ -88,17 +88,27 @@ const createMarker = (card) => {
   );
 
   marker
-    .addTo(offerMarkers)
+    .addTo(popupMarkers)
     .bindPopup(
-      card,
+      popup,
     );
 };
 
-const createOffersList = (offers) => {
-  offers.forEach((card) => {
-    createMarker(card);
-  });
-};
-offerMarkers.addTo(map);
+const renderPopups = (popups) => {
+  map.removeLayer(popupMarkers);
+  popupMarkers.clearLayers();
 
-export {getMap, createOffersList, setMainMarkerMove, setStartMapPosition, setStartMainMarkerPosition};
+  popups.forEach((popup) => {
+    createMarker(popup);
+  });
+
+  popupMarkers.addTo(map);
+};
+
+export {
+  getMap,
+  setMainMarkerMove,
+  setStartMapPosition,
+  setStartMainMarkerPosition,
+  renderPopups
+};
