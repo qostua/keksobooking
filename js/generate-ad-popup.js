@@ -1,6 +1,9 @@
 import {
   getNoun
 } from './utils.js';
+import {
+  getFilteredAds
+} from './filtration-ad.js';
 
 const offerTypes = {
   palace: 'Дворец',
@@ -91,6 +94,9 @@ const generateAdPopup = (data) => {
   return popup;
 };
 
+const generatePopupList = (adData) => getFilteredAds(adData).map((ad) => generateAdPopup(ad));
+
+
 export {
-  generateAdPopup
+  generatePopupList
 };
