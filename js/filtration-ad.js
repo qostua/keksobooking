@@ -28,7 +28,7 @@ const isAdFeaturesMatch = (adOffer, mapFormfeatures) => {
     if (mapFormfeatures.includes(feature)) {
       currentRating++;
     }
-    return rating;
+    return currentRating;
   }, 0);
 
   return rating === mapFormfeatures.length;
