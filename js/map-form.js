@@ -23,6 +23,10 @@ const houseRoomsSelect = document.querySelector('#housing-rooms');
 const houseHousingGuestsSelect = document.querySelector('#housing-guests');
 
 const mapForm = document.querySelector('.map__filters');
+const houseTypeSelect = mapForm.querySelector('#housing-type');
+const housePriceSelect = mapForm.querySelector('#housing-price');
+const houseRoomsSelect = mapForm.querySelector('#housing-rooms');
+const houseHousingGuestsSelect = mapForm.querySelector('#housing-guests');
 
 const resetMapForm = () => {
   mapForm.reset();
