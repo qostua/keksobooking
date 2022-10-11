@@ -24,9 +24,9 @@ const isAdFeaturesMatch = (adOffer, mapFormfeatures) => {
     return false;
   }
 
-  const rating = offerFeatures.reduce((rating, feature) => {
+  const rating = offerFeatures.reduce((currentRating, feature) => {
     if (mapFormfeatures.includes(feature)) {
-      rating++;
+      currentRating++;
     }
     return rating;
   }, 0);
