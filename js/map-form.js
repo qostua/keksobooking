@@ -16,11 +16,7 @@ const housePricesRange = {
     end: Infinity,
   },
 };
-
-const houseTypeSelect = document.querySelector('#housing-type');
-const housePriceSelect = document.querySelector('#housing-price');
-const houseRoomsSelect = document.querySelector('#housing-rooms');
-const houseHousingGuestsSelect = document.querySelector('#housing-guests');
+const DEFAULT_FILTER_VALUE = 'any';
 
 const mapForm = document.querySelector('.map__filters');
 const houseTypeSelect = mapForm.querySelector('#housing-type');
@@ -35,35 +31,33 @@ const resetMapForm = () => {
 const isMapFormFiltersActive = () => {
   const selects = mapForm.querySelectorAll('select');
 
-  for (const select of selects) {
-    if (select.value !== 'any') {
-      return true;
-    }
-  }
-
-  return false;
+  return Array.from(selects).some((select) => select.value !== DEFAULT_FILTER_VALUE);
 };
 const isMapFormFeaturesActive = () => {
   const checkboxs = mapForm.querySelectorAll('input[type=checkbox]');
 
-  for (const checkbox of checkboxs) {
-    if (checkbox.checked) {
-      return true;
-    }
-  }
-
-  return false;
+  return Array.from(checkboxs).some((checkbox) => checkbox.checked);
 };
 
-const getMapFormFeatures = () => {
+const getActiveFiltersMapForm = () => {
+  const filters = {};
+
+  filters.type = (houseTypeSelect.value !== DEFAULT_FILTER_VALUE) ? houseTypeSelect.value : false;
+  filters.rooms = (houseRoomsSelect.value !== DEFAULT_FILTER_VALUE) ? houseRoomsSelect.value : false;
+  filters.guests = (houseHousingGuestsSelect.value !== DEFAULT_FILTER_VALUE) ? houseHousingGuestsSelect.value : false;
+  filters.priceRange = housePricesRange[housePriceSelect.value];
+
+  return filters;
+};
+const getActiveFeaturesMapForm = () => {
   const checkboxs = mapForm.querySelectorAll('input[type=checkbox]');
   const features = [];
 
-  for (const checkbox of checkboxs) {
+  checkboxs.forEach((checkbox) => {
     if (checkbox.checked) {
       features.push(checkbox.value);
     }
-  }
+  });
 
   return features;
 };
