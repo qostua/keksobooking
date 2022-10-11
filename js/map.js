@@ -62,20 +62,9 @@ const setStartMainMarkerPosition = () => {
 };
 mainMarker.addTo(map);
 
-const setMainMarkerMove = (cb) => {
-  mainMarker.on('move', () => {
-    const coordinates = Object.values(mainMarker.getLatLng())
-      .map((item) => item.toFixed(5))
-      .join(', ');
-    cb(coordinates);
-  });
-};
-
-const popupMarkers = L.layerGroup();
-
-const createMarker = (popup) => {
-  const lat = popup.dataLat;
-  const lng = popup.dataLng;
+const createPopupMarker = (popup) => {
+  const lat = popup.dataset.lat;
+  const lng = popup.dataset.lng;
 
   const marker = L.marker(
     {

@@ -80,8 +80,8 @@ const setOfferData = (popup, data) => {
   }
 };
 const setLocationData = (popup, data) => {
-  popup.dataLat = data.lat;
-  popup.dataLng = data.lng;
+  popup.dataset.lat = data.lat;
+  popup.dataset.lng = data.lng;
 };
 
 const generateAdPopup = (data) => {
