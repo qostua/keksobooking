@@ -61,28 +61,24 @@ const getActiveFeaturesMapForm = () => {
 
   return features;
 };
-const getMapFormFilters = () => {
-  const filters = {};
-
-  filters.type = houseTypeSelect.value;
-  filters.priceRange = housePricesRange[housePriceSelect.value];
-  filters.rooms = houseRoomsSelect.value;
-  filters.guests = houseHousingGuestsSelect.value;
-
-  return filters;
-};
 
 const setMapFormChange = (cb) => {
   mapForm.addEventListener('change', () => {
     cb();
   });
 };
+const setMapFormReset = (cb) => {
+  mapForm.addEventListener('reset', () => {
+    cb();
+  });
+};
 
 export {
-  resetMapForm,
   isMapFormFiltersActive,
   isMapFormFeaturesActive,
-  getMapFormFeatures,
+  getActiveFiltersMapForm,
+  getActiveFeaturesMapForm,
   setMapFormChange,
-  getMapFormFilters
+  setMapFormReset,
+  resetMapForm
 };
