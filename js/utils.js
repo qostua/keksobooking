@@ -31,11 +31,10 @@ const showAlert = (idTemplate = 'error') => {
   };
 
   document.addEventListener('keydown', handleKeypress);
-
-  document.addEventListener('click', () => {
+  alert.addEventListener('click', () => {
     alert.remove();
     document.removeEventListener('keydown', handleKeypress);
-  }, { once: true });
+  });
 };
 
 const debounce = (callback, timeoutDelay = 500) => {
