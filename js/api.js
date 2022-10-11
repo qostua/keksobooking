@@ -10,11 +10,10 @@ const Url = {
 const getData = (onSucces) => {
   fetch(Url.DATA)
     .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        showAlert('error-server');
+      if (!response.ok) {
+        throw Error(`Bad response. Code: ${response.status}`);
       }
+      return response.json();
     })
     .then((data) => {
       onSucces(data);
