@@ -1,31 +1,35 @@
 import {
-  setAdFormSubmit,
-  resetForm,
-  setAddressValue
-} from './ad-form.js';
-import {
-  setMapFormChange
-} from './map-form.js';
+  getMap,
+  renderPopups,
+  setMainMarkerMove,
+  setStartPositionMap
+} from './map.js';
 import {
   activateAdForm,
   activateMapForm
-}from './activation-page.js';
+} from './activation-page.js';
 import {
   getData
 } from './api.js';
 import {
-  renderPopups,
-  getMap,
-  setMainMarkerMove
-} from './map.js';
-import {
   generatePopupList
-} from './generate-popup-list.js';
+} from './generate-ad-popup.js';
+import {
+  setMapFormChange,
+  setMapFormReset,
+  resetMapForm
+} from './map-form.js';
+import {
+  setAddressValue,
+  setAdFormSubmit,
+  activateSubmit,
+  setResetBtnClick,
+  resetAdForm
+} from './ad-form.js';
 import {
   showAlert,
   debounce
 } from './utils.js';
-import './preview-image.js';
 
 const RENDER_DELAY = 500;
 
@@ -40,11 +44,26 @@ getMap(() => {
       ),
       RENDER_DELAY,
     );
+    setMapFormReset(
+      debounce(
+        () => renderPopups(generatePopupList(adsData)),
+      ),
+    );
   });
-  setMainMarkerMove(setAddressValue);
+  setMainMarkerMove((coordinates) => setAddressValue(coordinates));
 });
+
+const resetForm = () => {
+  resetAdForm();
+  resetMapForm();
+  setStartPositionMap();
+};
 
 setAdFormSubmit(() => {
   resetForm();
   showAlert('success');
+  activateSubmit();
+});
+setResetBtnClick(() => {
+  resetForm();
 });
