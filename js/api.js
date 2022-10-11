@@ -23,7 +23,6 @@ const getData = (onSucces) => {
       showAlert('error-server');
     });
 };
-
 const sendData = (onSucces, onFail, body) => {
   fetch(
     Url.SERVER,
