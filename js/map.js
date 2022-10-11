@@ -1,4 +1,4 @@
-const StartCoordinate = {
+const StartCoordinates = {
   LAT: 35.67598,
   LNG: 139.75245,
 };
@@ -20,47 +20,49 @@ const pinIconOptions = {
 };
 
 const map = L.map('map-canvas');
+const mainMarker = L.marker();
+const layerPopupMarkers = L.layerGroup();
 
-const setStartMapPosition = () => {
-  map.setView({
-    lat: StartCoordinate.LAT,
-    lng: StartCoordinate.LNG,
-  }, MAP_START_ZOOM_SETTING);
+const mainPinIcon = L.icon(mainPinIconOptions);
+const pinIcon = L.icon(pinIconOptions);
+
+const setMainMarkerPosition = (lat, lng) => {
+  mainMarker.setLatLng({
+    lat: lat,
+    lng: lng,
+  });
 };
+const createMainMarker = () => {
+  mainMarker.options.draggable = true;
+  mainMarker.options.icon = mainPinIcon;
+  mainMarker.options.zIndexOffset = 999999;
 
-L.tileLayer(MAP_TILE_LAYER_URL, {
-  maxZoom: MAP_MAX_ZOOM_SETTING,
-  attribution: MAP_TILE_LAYER_COPYRIGHT,
-}).addTo(map);
+  mainMarker.addTo(map);
+};
+const setStartPositionMap = () => {
+  map.setView({
+    lat: StartCoordinates.LAT,
+    lng: StartCoordinates.LNG,
+  }, MAP_START_ZOOM_SETTING);
+
+  setMainMarkerPosition(StartCoordinates.LAT, StartCoordinates.LNG);
+};
+const setMapTileLayer = () => {
+  L.tileLayer(MAP_TILE_LAYER_URL, {
+    maxZoom: MAP_MAX_ZOOM_SETTING,
+    attribution: MAP_TILE_LAYER_COPYRIGHT,
+  }).addTo(map);
+};
 
 const getMap = (onSucsess) => {
   map.on('load', () => {
     onSucsess();
   });
-  setStartMapPosition();
-};
 
-const mainPinIcon = L.icon(mainPinIconOptions);
-const pinIcon = L.icon(pinIconOptions);
-
-const mainMarker = L.marker(
-  {
-    lat: StartCoordinate.LAT,
-    lng: StartCoordinate.LNG,
-  },
-  {
-    draggable: true,
-    icon: mainPinIcon,
-    zIndexOffset: 999999,
-  },
-);
-const setStartMainMarkerPosition = () => {
-  mainMarker.setLatLng({
-    lat: StartCoordinate.LAT,
-    lng: StartCoordinate.LNG,
-  });
+  setMapTileLayer();
+  setStartPositionMap();
+  createMainMarker();
 };
-mainMarker.addTo(map);
 
 const createPopupMarker = (popup) => {
   const lat = popup.dataset.lat;
@@ -77,27 +79,34 @@ const createPopupMarker = (popup) => {
   );
 
   marker
-    .addTo(popupMarkers)
+    .addTo(layerPopupMarkers)
     .bindPopup(
       popup,
     );
 };
-
 const renderPopups = (popups) => {
-  map.removeLayer(popupMarkers);
-  popupMarkers.clearLayers();
+  map.removeLayer(layerPopupMarkers);
+  layerPopupMarkers.clearLayers();
 
   popups.forEach((popup) => {
-    createMarker(popup);
+    createPopupMarker(popup);
   });
 
-  popupMarkers.addTo(map);
+  layerPopupMarkers.addTo(map);
+};
+
+const setMainMarkerMove = (cb) => {
+  mainMarker.on('move', () => {
+    const coordinates = Object.values(mainMarker.getLatLng())
+      .map((item) => item.toFixed(5))
+      .join(', ');
+    cb(coordinates);
+  });
 };
 
 export {
   getMap,
+  renderPopups,
   setMainMarkerMove,
-  setStartMapPosition,
-  setStartMainMarkerPosition,
-  renderPopups
+  setStartPositionMap
 };
