@@ -14,8 +14,12 @@ const getNoun = (number, oneNounValue, twoNounsValue, fiveNounsValue) => {
 };
 
 const showAlert = (idTemplate = 'error') => {
-  const alertTemplate = document.querySelector(`#${idTemplate}`).content.firstElementChild;
-  const alert = alertTemplate.cloneNode(true);
+  const alertTemplate = document.querySelector(`#${idTemplate}`);
+  if (!alertTemplate) {
+    return;
+  }
+
+  const alert = alertTemplate.content.firstElementChild.cloneNode(true);
 
   document.querySelector('body').append(alert);
 
