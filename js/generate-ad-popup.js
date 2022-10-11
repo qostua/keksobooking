@@ -18,11 +18,14 @@ const generateOfferFeaturesList = (popup, features) => {
   const featureItem = featuresList.querySelector('.popup__feature').cloneNode(true);
   featuresList.innerHTML = '';
 
+  const fragment = new DocumentFragment();
   for (const feature of features) {
     const featureItemClone = featureItem.cloneNode(true);
     featureItemClone.className = `popup__feature popup__feature--${feature}`;
-    featuresList.append(featureItemClone);
+    fragment.append(featureItemClone);
   }
+
+  featuresList.append(fragment);
 };
 const generateOfferPhotosList = (popup, photosSrc) => {
   const photosList = popup.querySelector('.popup__photos');
@@ -30,11 +33,14 @@ const generateOfferPhotosList = (popup, photosSrc) => {
   const photoItem = photosList.querySelector('.popup__photo').cloneNode(true);
   photosList.innerHTML = '';
 
+  const fragment = new DocumentFragment();
   for (const src of photosSrc) {
     const photoItemClone = photoItem.cloneNode(true);
     photoItemClone.src = src;
-    photosList.append(photoItemClone);
+    fragment.append(photoItemClone);
   }
+
+  photosList.append(fragment);
 };
 
 const setAuthorData = (popup, data) => {
