@@ -7,7 +7,7 @@ const avatarPreview = adForm.querySelector('.ad-form-header__preview img');
 const adImageChooser = adForm.querySelector('#images');
 const adPhotoContainer = adForm.querySelector('.ad-form__photo-container');
 
-const isTypeMatche = (fileName) => FILE_TYPES.some((type) => fileName.endsWith(type));
+const isTypeMatches = (fileName) => FILE_TYPES.some((type) => fileName.endsWith(type));
 const createAdPhotoPreview = (src) => {
   const image = document.createElement('img');
   image.src = src;
@@ -36,7 +36,7 @@ const setAvatarChooserChange = () => {
     }
 
     const fileName = file.name.toLowerCase();
-    if (!isTypeMatche(fileName)) {
+    if (!isTypeMatches(fileName)) {
       return;
     }
 
@@ -55,7 +55,7 @@ const setAdImageChooserChange = () => {
 
     for (const file of files) {
       const fileName = file.name.toLowerCase();
-      if (!isTypeMatche(fileName)) {
+      if (!isTypeMatches(fileName)) {
         return;
       }
 

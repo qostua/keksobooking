@@ -34,9 +34,9 @@ const isMapFormFiltersActive = () => {
   return Array.from(selects).some((select) => select.value !== DEFAULT_FILTER_VALUE);
 };
 const isMapFormFeaturesActive = () => {
-  const checkboxs = mapForm.querySelectorAll('input[type=checkbox]');
+  const checkboxes = mapForm.querySelectorAll('input[type=checkbox]');
 
-  return Array.from(checkboxs).some((checkbox) => checkbox.checked);
+  return Array.from(checkboxes).some((checkbox) => checkbox.checked);
 };
 
 const getActiveFiltersMapForm = () => {

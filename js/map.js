@@ -54,9 +54,9 @@ const setMapTileLayer = () => {
   }).addTo(map);
 };
 
-const getMap = (onSucsess) => {
+const getMap = (onSuccess) => {
   map.on('load', () => {
-    onSucsess();
+    onSuccess();
   });
 
   setMapTileLayer();

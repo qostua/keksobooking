@@ -17,7 +17,7 @@ const isAdOptionsMatch = (adOffer, filtersMapForm) => {
 
   return isTypeMatch && isRoomsMatch && isGuestsMatch && isPriceMatch;
 };
-const isAdFeaturesMatch = (adOffer, mapFormfeatures) => {
+const isAdFeaturesMatch = (adOffer, mapFormFeatures) => {
   const offerFeatures = adOffer.features;
 
   if (!offerFeatures) {
@@ -25,13 +25,13 @@ const isAdFeaturesMatch = (adOffer, mapFormfeatures) => {
   }
 
   const rating = offerFeatures.reduce((currentRating, feature) => {
-    if (mapFormfeatures.includes(feature)) {
+    if (mapFormFeatures.includes(feature)) {
       currentRating++;
     }
     return currentRating;
   }, 0);
 
-  return rating === mapFormfeatures.length;
+  return rating === mapFormFeatures.length;
 };
 
 const getFilteredAds = (adData) => {
@@ -41,13 +41,13 @@ const getFilteredAds = (adData) => {
 
   const filteredAds = [];
   const mapFormFilters = getActiveFiltersMapForm();
-  const mapFormfeatures = getActiveFeaturesMapForm();
+  const mapFormFeatures = getActiveFeaturesMapForm();
 
   for (let index = 0; index < adData.length; index++) {
     if (isMapFormFiltersActive() && !isAdOptionsMatch(adData[index].offer, mapFormFilters)) {
       continue;
     }
-    if (isMapFormFeaturesActive() && !isAdFeaturesMatch(adData[index].offer, mapFormfeatures)) {
+    if (isMapFormFeaturesActive() && !isAdFeaturesMatch(adData[index].offer, mapFormFeatures)) {
       continue;
     }
 

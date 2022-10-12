@@ -7,7 +7,7 @@ const Url = {
   SERVER: 'https://23.javascript.pages.academy/keksobooking',
 };
 
-const getData = (onSucces) => {
+const getData = (onSuccess) => {
   fetch(Url.DATA)
     .then((response) => {
       if (!response.ok) {
@@ -16,7 +16,7 @@ const getData = (onSucces) => {
       return response.json();
     })
     .then((data) => {
-      onSucces(data);
+      onSuccess(data);
     })
     .catch(() => {
       showAlert('error-server');
