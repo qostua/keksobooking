@@ -3,6 +3,7 @@
 🌐 [Сайт проекта](https://qostua.github.io/keksobooking/) | 📄 [Репозиторий](https://github.com/qostua/keksobooking/)
 
 **project tegs**: `JavaScript`, `Custom Validation`, `File API`, `Template`, `Debounce`, `Leaflet lib`
+**lighthouse scores**: ✅ Performance `98` | ✅ Accessibility `98` | ✅ Best Practices `92`
 
 ![Интерфейс сайта](https://user-images.githubusercontent.com/79047487/195340556-3f14a9c9-f4d1-4d17-ae1c-646a859ad2e7.jpg)
 
