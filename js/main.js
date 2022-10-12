@@ -1,8 +1,8 @@
 import {
   getMap,
   renderPopups,
-  setMainMarkerMove,
-  setStartPositionMap
+  setMainMarkerMove
+  // setStartPositionMap
 } from './map.js';
 import {
   activateAdForm,
@@ -56,7 +56,7 @@ getMap(() => {
 const resetForm = () => {
   resetAdForm();
   resetMapForm();
-  setStartPositionMap();
+  // setStartPositionMap();
 };
 
 setAdFormSubmit(() => {
