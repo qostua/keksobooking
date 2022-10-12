@@ -12,7 +12,7 @@
 
 ### <a name="tech-desk">Техническое описание</a>
 
-![Схема модулей проекта](https://user-images.githubusercontent.com/79047487/195341136-df456e4f-fa0a-4abb-81e9-f863f904393c.png)
+![Схема модулей проекта](https://user-images.githubusercontent.com/79047487/195343326-e3a4c7e7-63a5-4ee5-ae88-305c0ce9c834.png)
 
 Схема модулей проекта
 
